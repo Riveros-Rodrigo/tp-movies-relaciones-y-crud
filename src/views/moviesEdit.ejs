@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title class="titulo">Editar Película</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <figure>
+        <img src="/img/logo-DH.png" alt="Logo Digital House">
+      </figure>
+    <h1 class="titulo">Película Editada:  <%= Movie.title %></h1>
+    <section class="formulario">
+        <form action="/movies/update/<%= Movie.id %>?_method=PUT" method="POST" enctype="multipart/form-data">
+            <label for="title">Title </label>
+            <p><input type="text" name="title" id="title" value="<%= Movie.title %>" required></p>
+            <label for="rating">Rating </label>
+            <p><input type="number" name="rating" id="rating" value="<%= Movie.rating %>" required></p>
+            <label for="awards">Awards </label>
+            <p><input type="number" name="awards" id="awards" value="<%= Movie.awards %>" required></p>
+            <label for="release_date">Release date </label>
+            <p><input type="date" name="release_date" id="release_date" value="<%= moment(Movie.release_date).format('YYYY-MM-DD') %>" required></p>
+            <label for="length">Length </label>
+            <p><input type="number" name="length" id="length" value="<%= Movie.length %>" required></p>
+            <div>
+                <label for="genre_id">Genero</label>
+                    <select name="genre_id" id="genre_id" required>
+                        <% genres.forEach(genre => { %>
+                        <option value="<%= genre.id %>" <%= genre.id === Movie.genre_id && 'selected' %> <% if (Movie.genre_id == genre.id) { %><%= 'selected' %><% }; %>><%= genre.name %></option>
+                        <% }); %>
+                    </select>
+            </div>
+            <!-- agregar imagen -->
+            <div class="mb-3">
+                <label for="formFile" class="form-label">Cambiar imagen</label>
+                <input class="form-control" type="file" id="formFile" name="image">
+            </div>
+            <div>
+                <% actors.forEach(actor => { %>
+                    <input name="actors" type="checkbox" <%= Movie.actors.map(actor => actor.id).includes(actor.id) && 'checked' %> value="<%= actor.id %>" id="actor<%= actor.id %>">
+                    <label for="actor<%= actor.id %>">
+                        <%= actor.first_name %> <%= actor.last_name %>
+                    </label>
+                <% }) %>
+            </div>
+            
+            <br>
+            <p> <button class="botonAgregar" type="submit">Actualizar</button>
+        
+            <a  class="botonVolver" href="/movies">Listado de Películas</a></p>
+        </form>
+    </section>
+</body>
+
+</html>
